@@ -11,8 +11,8 @@ function App() {
       <CssBaseline />
       <ButtonAppBar />
       <Container fixed maxWidth='md'>
-        <AudioPlayer title={"Heardle #1"} source={soundfile} />
-        <AudioPlayer title={"Heardle #2"} source={soundfile} />
+        <AudioPlayer title={"Heardle #1"} source={soundfile} songId={1}/>
+        <AudioPlayer title={"Heardle #2"} source={soundfile} songId={200}/>
 
       </Container>
     </React.Fragment>

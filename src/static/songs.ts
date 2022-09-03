@@ -8042,7 +8042,10 @@ export const songs = [
     }
 ];
 
-const options = []
+
+export type SongOption = {id: number, artist: string, track: string};
+
+const options: SongOption[] = []
 let id = 1;
 for (const artist of songs) {
   for (const track of artist.songs) {
@@ -8052,6 +8055,7 @@ for (const artist of songs) {
         track
     }
     options.push(songEntry)
+    id += 1;
   }
 }
 

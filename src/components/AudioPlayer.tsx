@@ -11,21 +11,27 @@ import SongList from './SongList';
 interface AudiopPlayerProps {
   title: string;
   source: string;
+  songId: number;
 }
 
 export default function AudioPlayer(props: AudiopPlayerProps) {
   const [playTime, setPlayTime] = React.useState<number>(0);
+  const [guessedSongId, setGuessedSongId] = React.useState<number | null>(null);
   const timeOptions = [1, 2, 4, 7, 11, 15];
-  const { title, source } = props;
+  const { title, source, songId } = props;
 
   const audio = new Audio(source)
 
-  const play = () => {
+  const handlePlay = () => {
     audio.play();
     setTimeout(() => {
       audio.pause();
       audio.currentTime = 0; // Works as audio stop
     }, timeOptions[playTime] * 1000);
+  }
+
+  const handleCheckSong = () => {
+    console.log({ guessedSongId, songId });
   }
 
   return (
@@ -40,7 +46,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          <IconButton aria-label="play/pause" onClick={play}>
+          <IconButton aria-label="play/pause" onClick={handlePlay}>
             <PlayArrowIcon sx={{ height: 38, width: 38 }} />
           </IconButton>
           <Button variant="outlined" onClick={() => setPlayTime(playTime + 1)}>
@@ -49,8 +55,9 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
         </Box>
       </Box>
       <Box sx={{ alignItems: 'center', pl: 1, pb: 1 }}>
-        <SongList />
+        <SongList setGuessedSongId={setGuessedSongId} />
         <Button
+          onClick={handleCheckSong}
           sx={{ ml: 28, mt: 2, mr: 1 }}
         >
           OK
