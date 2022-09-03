@@ -6,14 +6,19 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Button } from '@mui/material';
-import soundfile from "../static/music.mp3";
 import SongList from './SongList';
 
-export default function MediaControlCard() {
+interface AudiopPlayerProps {
+  title: string;
+  source: string;
+}
+
+export default function AudioPlayer(props: AudiopPlayerProps) {
   const [playTime, setPlayTime] = React.useState<number>(0);
   const timeOptions = [1, 2, 4, 7, 11, 15];
+  const { title, source } = props;
 
-  const audio = new Audio(soundfile)
+  const audio = new Audio(source)
 
   const play = () => {
     audio.play();
@@ -28,7 +33,7 @@ export default function MediaControlCard() {
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography component="div" variant="h5">
-            #Heardle #184
+            {title}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">
             🔊🟨🟨🟩⬜⬜⬜
