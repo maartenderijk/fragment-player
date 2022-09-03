@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { Autocomplete, Button, CardActionArea } from '@mui/material';
-import TextField from '@mui/material/TextField';
+import { Button } from '@mui/material';
 import soundfile from "../static/music.mp3";
+import SongList from './SongList';
 
 export default function MediaControlCard() {
   const [playTime, setPlayTime] = React.useState<number>(0);
@@ -45,7 +44,7 @@ export default function MediaControlCard() {
         </Box>
       </Box>
       <Box sx={{ alignItems: 'center', pl: 1, pb: 1 }}>
-        <ComboBox />
+        <SongList />
         <Button
           sx={{ ml: 28, mt: 2, mr: 1 }}
         >
@@ -57,20 +56,3 @@ export default function MediaControlCard() {
 }
 
 
-function ComboBox() {
-  const top100Films = [
-    { label: 'the Beatles', year: 1994 },
-    { label: 'Queen', year: 1994 },
-    { label: 'Stones', year: 1994 },
-    { label: 'Underworld', year: 1994 },
-  ]
-  return (
-    <Autocomplete
-      disablePortal
-      id="combo-box-demo"
-      options={top100Films}
-      sx={{ width: 300, pt: 3, mr: 1 }}
-      renderInput={(params) => <TextField {...params} label="Song" />}
-    />
-  );
-}
