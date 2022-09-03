@@ -1,3 +1,4 @@
+
 export const songs = [
     {
         "artist": "Radiohead",
@@ -8040,3 +8041,18 @@ export const songs = [
         ]
     }
 ];
+
+const options = []
+let id = 1;
+for (const artist of songs) {
+  for (const track of artist.songs) {
+    const songEntry = {
+        id, 
+        artist: artist.artist, 
+        track
+    }
+    options.push(songEntry)
+  }
+}
+
+export const songOptions = [...options];
