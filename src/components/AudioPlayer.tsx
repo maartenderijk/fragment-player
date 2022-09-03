@@ -3,34 +3,45 @@ import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { Autocomplete, Button, CardActionArea } from '@mui/material';
 import TextField from '@mui/material/TextField';
-
+import soundfile from "../static/music.mp3";
 
 export default function MediaControlCard() {
-  const theme = useTheme();
+  const [playTime, setPlayTime] = React.useState<number>(0);
+  const timeOptions = [1, 2, 4, 7, 11, 15];
+
+  const audio = new Audio(soundfile)
+
+  const play = () => {
+    audio.play();
+    setTimeout(() => {
+      audio.pause();
+      audio.currentTime = 0; // Works as audio stop
+    }, timeOptions[playTime] * 1000);
+  }
 
   return (
     <Card sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography component="div" variant="h5">
-           #Heardle #184
+            #Heardle #184
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">
             🔊🟨🟨🟩⬜⬜⬜
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          <IconButton aria-label="play/pause">
+          <IconButton aria-label="play/pause" onClick={play}>
             <PlayArrowIcon sx={{ height: 38, width: 38 }} />
           </IconButton>
+          <Button variant="outlined" onClick={() => setPlayTime(playTime + 1)}>
+            +{playTime + 1}s
+          </Button>
         </Box>
       </Box>
       <Box sx={{ alignItems: 'center', pl: 1, pb: 1 }}>
@@ -46,9 +57,6 @@ export default function MediaControlCard() {
 }
 
 
-
-
-
 function ComboBox() {
   const top100Films = [
     { label: 'the Beatles', year: 1994 },
@@ -62,7 +70,7 @@ function ComboBox() {
       id="combo-box-demo"
       options={top100Films}
       sx={{ width: 300, pt: 3, mr: 1 }}
-      renderInput={(params) => <TextField {...params} label="Movie" />}
+      renderInput={(params) => <TextField {...params} label="Song" />}
     />
   );
 }
