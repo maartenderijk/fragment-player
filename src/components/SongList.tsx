@@ -11,7 +11,7 @@ interface SongListProps {
 export default function SongList(props: SongListProps) {
   const { setGuessedSongId } = props;
 
-  const handleChange = (e: any, value: SongOption | null) => {
+  const handleChange = (_e: React.SyntheticEvent<Element, Event>, value: SongOption | null) => {
     setGuessedSongId(value?.id || null)
     // quick option to find id for a song
     console.log(value?.id)
