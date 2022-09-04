@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Autocomplete } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { SongOption, songOptions, songs } from '../static/songs';
+import { SongOption, songOptions } from '../static/songs';
 
 
 interface SongListProps {
@@ -13,9 +13,8 @@ export default function SongList(props: SongListProps) {
 
   const handleChange = (_e: React.SyntheticEvent<Element, Event>, value: SongOption | null) => {
     setGuessedSongId(value?.id || null)
-    // quick option to find id for a song
-    console.log(value?.id)
   }
+
 
   return (
     <Autocomplete
