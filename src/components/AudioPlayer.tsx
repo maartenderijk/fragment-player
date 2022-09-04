@@ -42,7 +42,8 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
   const { title, source, songId } = props;
 
   const audio = new Audio(source)
-  const songArtist = songOptions.find(s => s.id == songId)?.artist;
+  const selectedSong = songOptions.find(s => s.id === songId);
+  const songArtist = selectedSong?.artist || '';
 
   const handleCheckResult = (guesses: GuessItem[]) => {
     let result: ResultItem = "playing"
@@ -50,9 +51,10 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
       result = "fail"
     }
     if (guesses.some(g => g === "correct")) {
-      result = "success"
+      result = "success"      
     }
     setResult(result)
+    return result
   }
 
   const handlePlay = () => {
@@ -65,14 +67,22 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
 
   const handleCheckSong = () => {
     let guess: GuessItem = "incorrect"
-    const guessedArtist = songOptions.find(s => s.id == guessedSongId)?.artist;
+    const guessedArtist = songOptions.find(s => s.id === guessedSongId)?.artist;
     if (guessedSongId === songId) {
       guess = "correct";
     } else if (guessedArtist === songArtist) {
       guess = "artistcorrect";
     }
-    handleCheckResult([...guesses, guess]);
-    setGuesses([...guesses, guess]);
+    const result = handleCheckResult([...guesses, guess]);
+    let updatedGuesses = [...guesses, guess];
+    if (result === "success") {
+      if (updatedGuesses.length < 5) {
+        const arrayLength = updatedGuesses.length;
+        for (let i = arrayLength; i < 6; i++)
+           updatedGuesses.push("null");
+      }
+    }
+    setGuesses(updatedGuesses);
   }
 
   const handleSkip = () => {
@@ -97,7 +107,10 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">
             {guesses.length > 0 && resultIconMap[result]}
-            {guesses.map(g => guessIconMap[g]).join("")}
+            {guesses.map(g => {
+              return guessIconMap[g]
+            }
+              ).join("")}
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
@@ -108,12 +121,17 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
               </IconButton>
 
               <Button variant="outlined" onClick={handleSkip}>
-                +{playTime + 1}s
+                {guesses.length === 5 ? 'skip' : `+${playTime + 1}s`}
               </Button>
             </> :
-            <IconButton aria-label="share" onClick={handleShare}>
-              <ShareIcon sx={{ height: 38, width: 38 }} />
-            </IconButton>
+            <>
+              <IconButton aria-label="share" onClick={handleShare}>
+                <ShareIcon sx={{ height: 38, width: 38 }} />
+              </IconButton>
+              <Typography>
+                {songArtist} - {selectedSong?.track || ''}
+              </Typography>
+            </>
           }
         </Box>
       </Box>
