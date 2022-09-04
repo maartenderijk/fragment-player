@@ -14,9 +14,11 @@ interface AudiopPlayerProps {
   songId: number;
 }
 
+
 export default function AudioPlayer(props: AudiopPlayerProps) {
   const [playTime, setPlayTime] = React.useState<number>(0);
   const [guessedSongId, setGuessedSongId] = React.useState<number | null>(null);
+  const [result, setResult] = React.useState("");
   const timeOptions = [1, 2, 4, 7, 11, 15];
   const { title, source, songId } = props;
 
@@ -31,7 +33,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
   }
 
   const handleCheckSong = () => {
-    console.log({ guessedSongId, songId });
+    setResult(`${guessedSongId === songId}`)
   }
 
   return (
@@ -42,7 +44,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
             {title}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">
-            🔊🟨🟨🟩⬜⬜⬜
+            🔊🟨🟨🟩⬜⬜⬜ {result}
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
