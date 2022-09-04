@@ -3,7 +3,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import ButtonAppBar from './components/AppBar';
 import AudioPlayer from './components/AudioPlayer';
-import soundfile from "./static/music.mp3";
 
 function App() {
   const [songData, setSongData] = React.useState<jsonData[]>([]);
@@ -30,7 +29,7 @@ function App() {
       <Container fixed maxWidth='md'>
         {songData.map(s => {
           return (
-            <AudioPlayer title={s.name} source={s.source} songId={s.id} />
+            <AudioPlayer key={s.id} title={s.name} source={s.source} songId={s.id} />
           )
         })}
       </Container>
