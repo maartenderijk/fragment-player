@@ -82,6 +82,9 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
            updatedGuesses.push("null");
       }
     }
+    if (guess !== "correct") {
+      setPlayTime(playTime + 1);
+    }
     setGuesses(updatedGuesses);
   }
 
