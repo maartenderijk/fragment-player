@@ -21,7 +21,7 @@ export default function ButtonAppBar() {
             <AudiotrackIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            The Music Notebook
+            The Songbook
           </Typography>
         </Toolbar>
       </AppBar>
