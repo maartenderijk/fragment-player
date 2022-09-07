@@ -3,8 +3,6 @@ Quick clone of Heardle functionality
 
 ![screenshot of application](./screenshot.png)
 
-## Todo: 
- - store results in localstorage
+## Todo:
  - fetch (additions to?) the songlist
  - layout
- 
