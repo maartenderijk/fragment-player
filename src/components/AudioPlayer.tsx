@@ -16,6 +16,12 @@ interface AudiopPlayerProps {
   songId: number;
 }
 
+interface UserHistoryItem {
+  id: number;
+  result: ResultItem;
+  guesses: GuessItem[];
+}
+
 type GuessItem = "correct" | "incorrect" | "skip" | "artistcorrect" | "null";
 type ResultItem = "success" | "fail" | "playing";
 
@@ -34,26 +40,52 @@ const resultIconMap = {
 }
 
 export default function AudioPlayer(props: AudiopPlayerProps) {
-  const [playTime, setPlayTime] = React.useState<number>(0);
-  const [guessedSongId, setGuessedSongId] = React.useState<number | null>(null);
-  const [guesses, setGuesses] = React.useState<GuessItem[]>([]);
-  const [result, setResult] = React.useState<ResultItem>("playing");
-  const timeOptions = [1, 2, 4, 7, 11, 15];
   const { title, source, songId } = props;
 
-  const audio = new Audio(source)
+  // Grab old results from localstorage
+  const allResults = localStorage.getItem("fragments")
+  const allResultsObject: UserHistoryItem[] = allResults ? JSON.parse(allResults) : [];
+  const songResult = allResultsObject.find((r: any) => r.id === songId);
+
+
+  const [playTime, setPlayTime] = React.useState<number>(0);
+  const [guessedSongId, setGuessedSongId] = React.useState<number | null>(null);
+  const [guesses, setGuesses] = React.useState<GuessItem[]>(songResult ? songResult.guesses : []);
+  const [result, setResult] = React.useState<ResultItem>(songResult ? songResult.result : "playing");
+  const timeOptions = [1, 2, 4, 7, 11, 15];
+
+
+  const audio = new Audio(source);
   const selectedSong = songOptions.find(s => s.id === songId);
   const songArtist = selectedSong?.artist || '';
+
+  React.useEffect(() => {
+    if (result === 'playing') {
+      return
+    }
+
+    const resultJson = {
+      id: songId,
+      result,
+      guesses
+    };
+
+    const storageValue = localStorage.getItem("fragments");
+    const oldValue = storageValue ? JSON.parse(storageValue) : [];
+    const newValue = [...oldValue, resultJson];
+    localStorage.setItem("fragments", JSON.stringify(newValue));
+
+  }, [result, songId, guesses])
 
   const handleCheckResult = (guesses: GuessItem[]) => {
     let result: ResultItem = "playing"
     if (guesses.length > 5) {
-      result = "fail"
+      result = "fail";
     }
     if (guesses.some(g => g === "correct")) {
-      result = "success"      
+      result = "success";
     }
-    setResult(result)
+    setResult(result);
     return result
   }
 
@@ -79,7 +111,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
       if (updatedGuesses.length < 5) {
         const arrayLength = updatedGuesses.length;
         for (let i = arrayLength; i < 6; i++)
-           updatedGuesses.push("null");
+          updatedGuesses.push("null");
       }
     }
     if (guess !== "correct") {
@@ -113,7 +145,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
             {guesses.map(g => {
               return guessIconMap[g]
             }
-              ).join("")}
+            ).join("")}
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
@@ -140,13 +172,14 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
       </Box>
       <Box sx={{ alignItems: 'center', pl: 1, pb: 1 }}>
         <SongList setGuessedSongId={setGuessedSongId} />
-
-        <Button
-          onClick={handleCheckSong}
-          sx={{ ml: 28, mt: 2, mr: 1 }}
-        >
-          OK
-        </Button>
+        {result === "playing" &&
+          <Button
+            onClick={handleCheckSong}
+            sx={{ ml: 28, mt: 2, mr: 1 }}
+          >
+            OK
+          </Button>
+        }
       </Box>
     </Card>
   );
