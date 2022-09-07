@@ -64,14 +64,14 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
       return
     }
 
-    const resultJson = {
+    const resultJson: UserHistoryItem = {
       id: songId,
       result,
       guesses
     };
 
     const storageValue = localStorage.getItem("fragments");
-    const oldValue = storageValue ? JSON.parse(storageValue) : [];
+    const oldValue: UserHistoryItem[] = storageValue ? JSON.parse(storageValue) : [];
     const newValue = [...oldValue, resultJson];
     localStorage.setItem("fragments", JSON.stringify(newValue));
 
