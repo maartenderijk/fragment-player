@@ -6,7 +6,6 @@ import AudioPlayer from './components/AudioPlayer';
 import { songData } from './static/tasks';
 
 function App() {
-
   return (
     <React.Fragment>
       <CssBaseline />
