@@ -45,7 +45,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
   // Grab old results from localstorage
   const allResults = localStorage.getItem("fragments")
   const allResultsObject: UserHistoryItem[] = allResults ? JSON.parse(allResults) : [];
-  const songResult = allResultsObject.find((r: any) => r.id === songId);
+  const songResult = allResultsObject.find(r => r.id === songId);
 
 
   const [playTime, setPlayTime] = React.useState<number>(0);
