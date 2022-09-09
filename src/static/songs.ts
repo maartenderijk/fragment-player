@@ -9801,6 +9801,11 @@ const songList: SongOption[] = [
     "id": 1960,
     "artist": "Marshmello",
     "track": "Alone"
+  },
+  {
+    "id": 1961,
+    "artist": "Daniel Powter",
+    "track": "Bad Day"
   }
 ];
 
