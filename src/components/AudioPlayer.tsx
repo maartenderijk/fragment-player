@@ -10,6 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import { Button } from '@mui/material';
 import SongList from './SongList';
 import { songOptions } from '../static/songs';
+import ProgressIndicator from './ProgressIndicator';
 
 interface AudiopPlayerProps {
   title: string;
@@ -51,6 +52,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
 
   const [playTime, setPlayTime] = React.useState<number>(0);
   const [pauseAudio, setPauseAudio] = React.useState(false);
+  const [audioPlaying, setAudioPlaying] = React.useState(false);
   const [guessedSongId, setGuessedSongId] = React.useState<number | null>(null);
   const [guesses, setGuesses] = React.useState<GuessItem[]>(songResult ? songResult.guesses : []);
   const [result, setResult] = React.useState<ResultItem>(songResult ? songResult.result : "playing");
@@ -99,10 +101,12 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
   const handlePlay = () => {
 
     if (result === "playing") {
+      setAudioPlaying(true);
       audio.play();
       setTimeout(() => {
         audio.pause();
         audio.currentTime = 0; // Works as audio stop
+        setAudioPlaying(false);
       }, timeOptions[playTime] * 1000);
     }
     if (result !== "playing") {
@@ -173,20 +177,29 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          <IconButton aria-label="play" onClick={handlePlay}>
-            {pauseAudio ?
-              <PauseIcon sx={{ height: 38, width: 38 }} />
-              :
-              <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-            }
-          </IconButton>
           {result === "playing" &&
-            <Button variant="outlined" onClick={handleSkip}>
-              {guesses.length === 5 ? 'skip' : `+${playTime + 1}s`}
-            </Button>
+            <>
+              <IconButton aria-label="play" onClick={handlePlay}>
+                {audioPlaying ?
+                  <ProgressIndicator seconds={playTime} />
+                  :
+                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                }
+              </IconButton>
+              <Button variant="outlined" onClick={handleSkip}>
+                {guesses.length === 5 ? 'skip' : `+${playTime + 1}s`}
+              </Button>
+            </>
           }
           {result !== "playing" &&
             <>
+              <IconButton aria-label="play" onClick={handlePlay}>
+                {pauseAudio ?
+                  <PauseIcon sx={{ height: 38, width: 38 }} />
+                  :
+                  <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+                }
+              </IconButton>
               <IconButton aria-label="share" onClick={handleShare}>
                 <ShareIcon sx={{ height: 38, width: 38 }} />
               </IconButton>
