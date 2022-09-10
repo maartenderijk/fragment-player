@@ -5,6 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 import ShareIcon from '@mui/icons-material/Share';
 import { Button } from '@mui/material';
 import SongList from './SongList';
@@ -46,16 +47,15 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
   const allResults = localStorage.getItem("fragments")
   const allResultsObject: UserHistoryItem[] = allResults ? JSON.parse(allResults) : [];
   const songResult = allResultsObject.find(r => r.id === songId);
-
+  const [audio] = React.useState(new Audio(source));
 
   const [playTime, setPlayTime] = React.useState<number>(0);
+  const [pauseAudio, setPauseAudio] = React.useState(false);
   const [guessedSongId, setGuessedSongId] = React.useState<number | null>(null);
   const [guesses, setGuesses] = React.useState<GuessItem[]>(songResult ? songResult.guesses : []);
   const [result, setResult] = React.useState<ResultItem>(songResult ? songResult.result : "playing");
   const timeOptions = [1, 2, 4, 7, 11, 15];
 
-
-  const audio = new Audio(source);
   const selectedSong = songOptions.find(s => s.id === songId);
   const songArtist = selectedSong?.artist || '';
 
@@ -74,8 +74,15 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
     const oldValue: UserHistoryItem[] = storageValue ? JSON.parse(storageValue) : [];
     const newValue = [...oldValue, resultJson];
     localStorage.setItem("fragments", JSON.stringify(newValue));
-
   }, [result, songId, guesses])
+
+  React.useEffect(() => {
+    audio.addEventListener('ended', () => setPauseAudio(false));
+    return () => {
+      audio.removeEventListener('ended', () => setPauseAudio(false));
+    };
+  }, []);
+
 
   const handleCheckResult = (guesses: GuessItem[]) => {
     let result: ResultItem = "playing"
@@ -90,12 +97,29 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
   }
 
   const handlePlay = () => {
-    audio.play();
-    setTimeout(() => {
-      audio.pause();
-      audio.currentTime = 0; // Works as audio stop
-    }, timeOptions[playTime] * 1000);
+
+    if (result === "playing") {
+      audio.play();
+      setTimeout(() => {
+        audio.pause();
+        audio.currentTime = 0; // Works as audio stop
+      }, timeOptions[playTime] * 1000);
+    }
+    if (result !== "playing") {
+
+      if (pauseAudio) {
+        audio.pause();
+      }
+      else {
+        audio.play();
+      }
+
+      setPauseAudio(!pauseAudio);
+    }
   }
+
+
+
 
   const handleCheckSong = () => {
     let guess: GuessItem = "incorrect"
@@ -149,16 +173,19 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
           </Typography>
         </CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          {result === "playing" ?
-            <>
-              <IconButton aria-label="play/pause" onClick={handlePlay}>
-                <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-              </IconButton>
-
-              <Button variant="outlined" onClick={handleSkip}>
-                {guesses.length === 5 ? 'skip' : `+${playTime + 1}s`}
-              </Button>
-            </> :
+          <IconButton aria-label="play" onClick={handlePlay}>
+            {pauseAudio ?
+              <PauseIcon sx={{ height: 38, width: 38 }} />
+              :
+              <PlayArrowIcon sx={{ height: 38, width: 38 }} />
+            }
+          </IconButton>
+          {result === "playing" &&
+            <Button variant="outlined" onClick={handleSkip}>
+              {guesses.length === 5 ? 'skip' : `+${playTime + 1}s`}
+            </Button>
+          }
+          {result !== "playing" &&
             <>
               <IconButton aria-label="share" onClick={handleShare}>
                 <ShareIcon sx={{ height: 38, width: 38 }} />
@@ -168,6 +195,7 @@ export default function AudioPlayer(props: AudiopPlayerProps) {
               </Typography>
             </>
           }
+
         </Box>
       </Box>
       <Box sx={{ alignItems: 'center', pl: 1, pb: 1 }}>
