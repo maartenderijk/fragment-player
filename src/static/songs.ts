@@ -9806,12 +9806,17 @@ const songList: SongOption[] = [
     "id": 1961,
     "artist": "Daniel Powter",
     "track": "Bad Day"
-  },  
+  },
   {
     "id": 1962,
     "artist": "Third Eye Blind",
     "track": "Semi-Charmed Life"
   },
+  {
+    "id": 1963,
+    "artist": "The Beach Boys",
+    "track": "Good Vibrations"
+  }, 
 ];
 
-export const songOptions = songList.sort((a,b) => (a.artist > b.artist) ? 1 : ((b.artist > a.artist) ? -1 : 0));
+export const songOptions = songList.sort((a, b) => (a.artist > b.artist) ? 1 : ((b.artist > a.artist) ? -1 : 0));
