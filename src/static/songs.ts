@@ -9816,7 +9816,11 @@ const songList: SongOption[] = [
     "id": 1963,
     "artist": "The Beach Boys",
     "track": "Good Vibrations"
-  }, 
+  }, {
+    "id": 1964,
+    "artist": "Billie Eilish",
+    "track": "bad guy"
+  },
 ];
 
 export const songOptions = songList.sort((a, b) => (a.artist > b.artist) ? 1 : ((b.artist > a.artist) ? -1 : 0));
