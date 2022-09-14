@@ -2,6 +2,16 @@ const baseSite = process.env.PUBLIC_URL;
 
 export const songData = [
     {
+        "source": `${baseSite}/media/28.mp3`,
+        "name": "M's Song of Week #2",
+        "id": 1967
+    },
+    {
+        "source": `${baseSite}/media/27.mp3`,
+        "name": "#Heardle #202",
+        "id": 1965
+    },
+    {
         "source": `${baseSite}/media/26.mp3`,
         "name": "#Heardle #201",
         "id": 1964

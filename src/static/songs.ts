@@ -9820,6 +9820,19 @@ const songList: SongOption[] = [
     "id": 1964,
     "artist": "Billie Eilish",
     "track": "bad guy"
+  }, {
+    "id": 1965,
+    "artist": "KISS",
+    "track": "Rock and Roll All Nite"
+  }, {
+    "id": 1966,
+    "artist": "The Opposites",
+    "track": "Sukkel voor de liefde"
+  },
+  {
+    "id": 1967,
+    "artist": "The Opposites",
+    "track": "Slapeloze Nachten"
   },
 ];
 
