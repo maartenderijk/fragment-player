@@ -9834,6 +9834,21 @@ const songList: SongOption[] = [
     "artist": "The Opposites",
     "track": "Slapeloze Nachten"
   },
+  {
+    "id": 1968,
+    "artist": "Everybody Talks",
+    "track": "Neon Trees"
+  },
+  {
+    "id": 1969,
+    "artist": "Tones and I",
+    "track": "Never Seen the Rain"
+  },
+  {
+    "id": 1970,
+    "artist": "Dan + Shay",
+    "track": "Speechless"
+  },
 ];
 
 export const songOptions = songList.sort((a, b) => (a.artist > b.artist) ? 1 : ((b.artist > a.artist) ? -1 : 0));
